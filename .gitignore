@@ -416,3 +416,5 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+disks/image_boot.d64
+disks/image_data.d81

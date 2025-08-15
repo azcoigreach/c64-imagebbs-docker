@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  tcpser:
+    build:
+      context: .
+      dockerfile: ./docker/tcpser/Dockerfile
+    command: ["-v", "25232", "-s", "2400", "-l", "7", "-tSs", "-p", "6400"]
+    ports:
+      - "6400:6400" # Expose telnet port to the host
+    networks:
+      - c64net
+
+  vice:
+    build:
+      context: .
+      dockerfile: ./docker/vice/Dockerfile
+    depends_on:
+      - tcpser
+    volumes:
+      - ./disks:/work/disks:rw
+      - ./configs/vice:/work/configs/vice:ro
+      - ./scripts:/work/scripts:rw
+    environment:
+      - DISPLAY=:99
+    networks:
+      - c64net
+
+networks:
+  c64net:
+    driver: bridge
